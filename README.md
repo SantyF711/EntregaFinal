@@ -1,4 +1,4 @@
-ProyectoCoder Este es un proyecto desarrollado con Django para la cursada de CoderHouse.
+Este es un proyecto desarrollado con Django para la cursada de CoderHouse.
 
 Requisitos Python 3.11 o superior pip
 
