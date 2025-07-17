@@ -31,3 +31,6 @@ Levantar el servidor: python manage.py runserver
 Notas Para agregar nuevas apps, usar: python manage.py startapp nombre_app
 
 Para acceder al panel de administración: http://127.0.0.1:8000/admin/
+
+Video con funcionalidades de la pagina:
+https://youtu.be/x4MhQ-_H7C0
