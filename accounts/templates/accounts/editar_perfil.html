@@ -5,7 +5,6 @@
     <div class="card shadow p-4">
         <h2 class="text-center text-primary mb-4">Mi Perfil</h2>
 
-        <!-- Mostrar datos del usuario -->
         <div id="modo-lectura">
             <p><strong>Nombre de usuario:</strong> {{ user.username }}</p>
             <p><strong>Correo electrónico:</strong> {{ user.email }}</p>
@@ -20,7 +19,6 @@
             <button class="btn btn-primary mt-3" onclick="mostrarFormulario()">Editar perfil</button>
         </div>
 
-        <!-- Formulario oculto inicialmente -->
         <form method="post" enctype="multipart/form-data" id="formulario-edicion" class="d-none mt-4">
             {% csrf_token %}
             {% for field in form %}
