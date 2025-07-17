@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+{% block contenido %}
+
+<form method="get" action="{% url 'recetas_buscar' %}" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Buscar recetas..." value="{{ request.GET.q|default:'' }}">
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </div>
+</form>
+
+<h2 class="mb-4">
+    {% if query %}
+        Resultados para "{{ query }}"
+    {% else %}
+        Recetas Compartidas
+    {% endif %}
+</h2>
+
+{% if recetas %}
+    <div class="row">
+        {% for receta in recetas %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+
+                    {% if receta.imagen %}
+                        <img src="{{ receta.imagen.url }}" class="card-img-top" alt="Imagen de la receta" style="object-fit: cover; height: 200px;">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ receta.titulo }}</h5>
+                        <p class="card-text">{{ receta.ingredientes|truncatewords:12 }}</p>
+                        <p class="text-muted small">Por: {{ receta.usuario.username }} | Publicado: {{ receta.fecha_publicacion|date:"d/m/Y" }}</p>
+                        <a href="{% url 'detalle_receta' receta.pk %}?next={{ request.get_full_path }}" class="btn btn-outline-primary btn-sm">Ver más</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No se encontraron recetas.</p>
+{% endif %}
+{% endblock %}

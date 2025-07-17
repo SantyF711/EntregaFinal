@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+
+{% block contenido %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Mis Recetas</h2>
+    <a href="{% url 'crear_receta' %}" class="btn btn-success">➕ Nueva Receta</a>
+</div>
+
+{% if recetas %}
+    <div class="row">
+        {% for receta in recetas %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+
+                    {% if receta.imagen %}
+                        <img src="{{ receta.imagen.url }}" class="card-img-top" alt="Imagen de la receta" style="object-fit: cover; height: 200px;">
+                    {% endif %}
+
+                    <div class="card-body">
+                        <h5 class="card-title">{{ receta.titulo }}</h5>
+                        <p class="card-text">{{ receta.ingredientes|truncatewords:10 }}</p>
+                        
+                        <a href="{% url 'detalle_receta' receta.pk %}?next={{ request.get_full_path }}" class="btn btn-outline-primary btn-sm">Ver más</a>
+                        
+                        <a href="{% url 'editar_receta' receta.pk %}" class="btn btn-warning btn-sm">✏️ Editar</a>
+                        
+                        <form action="{% url 'borrar_receta' receta.pk %}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que querés borrar esta receta?');">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">🗑️ Borrar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No tenés recetas creadas todavía.</p>
+{% endif %}
+{% endblock %}

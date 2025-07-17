@@ -1,0 +1,49 @@
+{% extends 'core/base.html' %}
+
+{% block contenido %}
+<div class="container mt-5" style="max-width: 600px;">
+    <div class="card shadow p-4">
+        <h2 class="text-center text-primary mb-4">Mi Perfil</h2>
+
+        <!-- Mostrar datos del usuario -->
+        <div id="modo-lectura">
+            <p><strong>Nombre de usuario:</strong> {{ user.username }}</p>
+            <p><strong>Correo electrónico:</strong> {{ user.email }}</p>
+            <p><strong>Nombre:</strong> {{ user.nombre }}</p>
+            <p><strong>Apellido:</strong> {{ user.apellido }}</p>
+            <p><strong>Fecha de nacimiento:</strong> {{ user.fecha_nacimiento|date:"d/m/Y" }}</p>
+            {% if user.icono_perfil %}
+                <p><strong>Ícono de perfil:</strong><br>
+                <img src="{{ user.icono_perfil.url }}" alt="Ícono de perfil" class="img-thumbnail" style="max-width: 150px;"></p>
+            {% endif %}
+
+            <button class="btn btn-primary mt-3" onclick="mostrarFormulario()">Editar perfil</button>
+        </div>
+
+        <!-- Formulario oculto inicialmente -->
+        <form method="post" enctype="multipart/form-data" id="formulario-edicion" class="d-none mt-4">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger small">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="d-grid">
+                <button type="submit" class="btn btn-success">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function mostrarFormulario() {
+        document.getElementById('modo-lectura').classList.add('d-none');
+        document.getElementById('formulario-edicion').classList.remove('d-none');
+    }
+</script>
+{% endblock %}

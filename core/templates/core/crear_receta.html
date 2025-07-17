@@ -1,0 +1,12 @@
+{% extends 'core/base.html' %}
+
+{% block contenido %}
+<h2 class="mb-4">Crear Nueva Receta</h2>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar Receta</button>
+    <a href="{% url 'mis_recetas' %}" class="btn btn-secondary">Cancelar</a>
+</form>
+{% endblock %}

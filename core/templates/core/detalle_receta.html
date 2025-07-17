@@ -1,0 +1,65 @@
+{% extends 'core/base.html' %}
+
+{% block contenido %}
+
+<!-- Botón Volver -->
+<div class="mb-3">
+    <a href="{% url 'ver_recetas' %}" class="btn btn-outline-secondary">← Volver a Recetas</a>
+</div>
+
+<h2>{{ receta.titulo }}</h2>
+
+{% if receta.imagen %}
+    <img src="{{ receta.imagen.url }}" alt="Imagen de la receta" style="max-width: 100%; height: auto;">
+{% endif %}
+
+<h4>Ingredientes:</h4>
+<p>{{ receta.ingredientes }}</p>
+
+<h4>Preparación:</h4>
+<p>{{ receta.preparacion }}</p>
+
+<hr>
+
+<h3>Comentarios</h3>
+
+{% for post in posts %}
+    <div class="mb-3 p-3 border rounded d-flex">
+        {% if post.usuario.icono_perfil %}
+            <img src="{{ post.usuario.icono_perfil.url }}" alt="Perfil" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+        {% else %}
+            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                <span>👤</span>
+            </div>
+        {% endif %}
+
+        <div>
+            <strong>{{ post.usuario.username }}</strong> - {{ post.fecha_publicacion|date:"d/m/Y H:i" }}<br>
+            Puntaje: {{ post.puntaje }} ⭐<br>
+            <p>{{ post.comentario }}</p>
+
+            {% if user == post.usuario %}
+                <form method="post" action="{% url 'eliminar_comentario' post.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-danger mt-2">Eliminar</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% empty %}
+    <p>Aún no hay comentarios.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+<h4>Dejar un comentario</h4>
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ referer }}">
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+{% else %}
+<p><a href="{% url 'login' %}">Iniciá sesión</a> para dejar un comentario.</p>
+{% endif %}
+
+{% endblock %}
